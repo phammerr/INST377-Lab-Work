@@ -22,6 +22,7 @@ async function mainEvent() { // the async keyword means we can make API requests
   /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
   mainForm.addEventListener('submit', async (submitEvent) => { // async has to be declared on every function that needs to "await" something
     
+
     // This prevents your page from becoming a list of 1000 records from the county, even if your form still has an action set on it
     submitEvent.preventDefault(); 
     
@@ -53,9 +54,14 @@ async function mainEvent() { // the async keyword means we can make API requests
     console.table(currentList); 
   });
 
-    filterButton.addEventListener('click',(event) => {
-      console.log('clicked FilterButton');
-    })
+  filterButton.addEventListener('click', (event) => {
+    console.log('clicked filterButton');
+
+    const formData = new FormData(mainForm);
+    const formProps = Object.fromEntries(formData);
+
+    console.log(formProps);
+  })
   /*
     Now that you HAVE a list loaded, write an event listener set to your filter button
     it should use the 'new FormData(target-form)' method to read the contents of your main form
