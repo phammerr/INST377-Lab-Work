@@ -9,13 +9,13 @@ function getRandomInt(min, max) {
 }
 
 function injectHTML(list) {
-  console.log('fired injectHTML')
+  console.log('fired injectHTML');
   const target = document.querySelector('#restaurant_list');
   target.innerHTML = '';
   list.forEach((item) => {
     const str = `<li>${item.name}<li>`;
-    target.innerHTML += str
-  })
+    target.innerHTML += str;
+  });
 }
 /* A quick filter that will return something based on a matching input */
 function filterList(list, query) {
@@ -23,7 +23,7 @@ function filterList(list, query) {
     const lowerCaseName = item.name.toLowerCase(); 
     const lowerCaseQuery = query.toLowerCase();
     return lowerCaseName.includes(lowerCaseQuery);
-  })
+  });
   /*
     Using the .filter array method, 
     return a list that is filtered by comparing the item name in lower case
@@ -37,7 +37,7 @@ function cutRestaurantList(list){
   const range =[...Array(15).keys()];
   return newArray = range.map((item)=> {
     const index = getRandomIntInclusive(0, list.length - 1);
-    return list[index]
+    return list[index];
   });
 }
 
@@ -45,7 +45,7 @@ async function mainEvent() { // the async keyword means we can make API requests
   const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
   const filterDataButton = document.querySelector('#filter');// Add a querySelector that targets your filter button here
   const loadDataButton = document.querySelector('#data_load');
-  const generateDataButton = document.querySelector('#generate');
+  const generateListButton = document.querySelector('#generate');
   let currentList = []; // this is "scoped" to the main event function
   
   /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
@@ -75,15 +75,8 @@ async function mainEvent() { // the async keyword means we can make API requests
     // This changes the response from the GET into data we can use - an "object"
     currentList = await results.json();
     console.table(currentList); 
-    injectHTML(currentList);
   });
 
-  filterDataButton.addEventListener('click', (event) => {
-  });
-
-  generateListButton.addEventListener('click', (event) => {
-  });
-  /* 
   filterDataButton.addEventListener('click', (event) => {
     console.log('clicked filterButton');
 
@@ -96,8 +89,13 @@ async function mainEvent() { // the async keyword means we can make API requests
     injectHTML(newList);
     
     console.log(newList);
-  })
-  */
+  });
+
+  generateListButton.addEventListener('click', (event) => {
+    console.log('generate new list');
+    const restaurantsList = cutRestaurantList(currentList);
+    injectHTML(restaurantsList);
+  });
 
   /*
     Now that you HAVE a list loaded, write an event listener set to your filter button
