@@ -10,11 +10,11 @@ function getRandomInt(min, max) {
 
 function injectHTML(list) {
   console.log('fired injectHTML')
-  const target = socument.querySelector('restaurant_list')
-  target.innerHTML('')
+  const target = document.querySelector('#restaurant_list')
+  target.innerHTML = '';
   list.forEach((item) => {
-    const str = `<li>${item.name}<li>`
-    target.HTML += str
+    const str = `<li>${item.name}<li>`;
+    target.innerHTML += str
   })
 }
 /* A quick filter that will return something based on a matching input */
