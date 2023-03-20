@@ -32,13 +32,19 @@
                 <label for="resto">Restaurant Name</label>
                 <input type="text" id="resto" name="resto" />
             </div>
-            <button type ="button" # ="filter">Filter Data</button>
-            <button type ="button" # ="generate">Generate List</button>
+            <div class = "buttons">
+            <button type ="button" id ="filter">Filter Data</button>
+            <button type ="button" id ="generate">Generate List</button>
+            </div>
           </form>
         </div>
         <div class="right_section box">
-        <h2>Local Restaurants</h2>
-        <ol class="box" id="restaurant_list">A list of restaurants from an API</ol>
+            <h2>Local Restaurants</h2>
+            <ol class="box" id="restaurant_list">
+            A list of local restaurants
+            </ol>
+            <div class = "lds-ellipsis" id = "data_load_animation">
+            <div></div><div></div><div></div><div></div></div>
         </div>
       </div>
       <footer class = "footer">Github Account Name: <a href="http://github.com/phammerr" target="_blank" rel="Ethan's GitHub Account">phammerr</a></footer>
