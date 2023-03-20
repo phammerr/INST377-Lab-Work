@@ -10,7 +10,7 @@ function getRandomInt(min, max) {
 
 function injectHTML(list) {
   console.log('fired injectHTML')
-  const target = document.querySelector('#restaurant_list')
+  const target = document.querySelector('#restaurant_list');
   target.innerHTML = '';
   list.forEach((item) => {
     const str = `<li>${item.name}<li>`;
@@ -32,14 +32,24 @@ function filterList(list, query) {
   */
 }
 
+function cutRestaurantList(list){
+  console.log('fired cut list');
+  const range =[...Array(15).keys()];
+  return newArray = range.map((item)=> {
+    const index = getRandomIntInclusive(0, list.length - 1);
+    return list[index]
+  });
+}
+
 async function mainEvent() { // the async keyword means we can make API requests
   const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
-  const filterButton = document.querySelector('.filter_button');// Add a querySelector that targets your filter button here
-
+  const filterDataButton = document.querySelector('#filter');// Add a querySelector that targets your filter button here
+  const loadDataButton = document.querySelector('#data_load');
+  const generateDataButton = document.querySelector('#generate');
   let currentList = []; // this is "scoped" to the main event function
   
   /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
-  mainForm.addEventListener('submit', async (submitEvent) => { // async has to be declared on every function that needs to "await" something
+  loadDataButton.addEventListener('click', async (submitEvent) => { // async has to be declared on every function that needs to "await" something
     
 
     // This prevents your page from becoming a list of 1000 records from the county, even if your form still has an action set on it
@@ -68,7 +78,13 @@ async function mainEvent() { // the async keyword means we can make API requests
     injectHTML(currentList);
   });
 
-  filterButton.addEventListener('click', (event) => {
+  filterDataButton.addEventListener('click', (event) => {
+  });
+
+  generateListButton.addEventListener('click', (event) => {
+  });
+  /* 
+  filterDataButton.addEventListener('click', (event) => {
     console.log('clicked filterButton');
 
     const formData = new FormData(mainForm);
@@ -77,9 +93,12 @@ async function mainEvent() { // the async keyword means we can make API requests
     console.log(formProps);
     
     const newList = filterList(currentList, formProps.resto);
+    injectHTML(newList);
     
     console.log(newList);
   })
+  */
+
   /*
     Now that you HAVE a list loaded, write an event listener set to your filter button
     it should use the 'new FormData(target-form)' method to read the contents of your main form
