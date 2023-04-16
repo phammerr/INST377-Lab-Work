@@ -52,7 +52,6 @@ function getRandomIntInclusive(min, max) {
     loadAnimation.style.display = 'none';
     generateListButton.classList.add('hidden');
 
-    let storedList =[];
     let currentList = []; // this is "scoped" to the main event function
     
     /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
@@ -68,13 +67,14 @@ function getRandomIntInclusive(min, max) {
       const results = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
   
       // This changes the response from the GET into data we can use - an "object"
-      storedList = await results.json();
+      const storedList = await results.json();
+      localStorage.setItem('storedData', JSON.stringify(storedList));
       if (storedList.length > 0) {
         generateListButton.classList.remove('hidden');
       }
   
       loadAnimation.style.display = 'none';
-      console.table(storedList); 
+    //   console.table(storedList); 
     });
   
     filterDataButton.addEventListener('click', (event) => {
@@ -93,7 +93,10 @@ function getRandomIntInclusive(min, max) {
   
     generateListButton.addEventListener('click', (event) => {
       console.log('generate new list');
+      const recallList = localStorage.getItem('storedData');
+      const storedList = JSON.parse(recallList);
       currentList = cutRestaurantList(storedList);
+      
       console.log(currentList)
       injectHTML(currentList);
     });
