@@ -61,7 +61,7 @@ function getRandomIntInclusive(min, max) {
     
     array.forEach((item) => {
         console.log('marker place', item);
-        const{coordinates} = item.geocoded_column1
+        const{coordinates} = item.geocoded_column_1
         L.marker([coordinates[1], coordinates[0]]).addTo(map);
     })
   }
@@ -69,6 +69,7 @@ function getRandomIntInclusive(min, max) {
   async function mainEvent() { // the async keyword means we can make API requests
     const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
     const loadDataButton = document.querySelector('#data_load');
+    const clearDataButton = document.querySelector('#data_clear');
     const generateListButton = document.querySelector('#generate');
     const textField = document.querySelector('#resto');
 
@@ -79,8 +80,8 @@ function getRandomIntInclusive(min, max) {
     const carto = initMap();
 
     const storedData = localStorage.getItem("storedData");
-    const parsedData = JSON.parse(storedData);
-    if (parsedData.length > 0) {
+    let parsedData = JSON.parse(storedData);
+    if (parsedData?.length > 0) {
         generateListButton.classList.remove("hidden");
     }
 
@@ -101,7 +102,12 @@ function getRandomIntInclusive(min, max) {
       // This changes the response from the GET into data we can use - an "object"
       const storedList = await results.json();
       localStorage.setItem('storedData', JSON.stringify(storedList));
-  
+      parsedData = storedList;
+    
+      if (parsedData?.length > 0) {
+        generateListButton.classList.remove("hidden");
+    }
+
       loadAnimation.style.display = 'none';
     // console.table(storedList); 
     });
@@ -120,8 +126,13 @@ function getRandomIntInclusive(min, max) {
       injectHTML(newList);
       console.log(newList);
       markerPlace(newList, carto);
-    })
+    });
   
+    clearDataButton.addEventListener("click", (event) => {
+        console.log('clear browser data');
+        localStorage.clear();
+        console.log('localStorage Check', localStorage.getItem("storedData"));
+    })
   }
   
   document.addEventListener('DOMContentLoaded', async () => mainEvent()); // the async keyword means we can make API requests
