@@ -43,7 +43,6 @@ function getRandomIntInclusive(min, max) {
   
   async function mainEvent() { // the async keyword means we can make API requests
     const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
-    const filterDataButton = document.querySelector('#filter');// Add a querySelector that targets your filter button here
     const loadDataButton = document.querySelector('#data_load');
     const generateListButton = document.querySelector('#generate');
     const textField = document.querySelector('#resto');
@@ -51,6 +50,12 @@ function getRandomIntInclusive(min, max) {
     const loadAnimation = document.querySelector('#data_load_animation');
     loadAnimation.style.display = 'none';
     generateListButton.classList.add('hidden');
+
+    const storedData = localStorage.getItem("storedData");
+    const parsedData = JSON.parse(storedData);
+    if (parsedData.length > 0) {
+        generateListButton.classList.remove("hidden");
+    }
 
     let currentList = []; // this is "scoped" to the main event function
     
@@ -69,34 +74,14 @@ function getRandomIntInclusive(min, max) {
       // This changes the response from the GET into data we can use - an "object"
       const storedList = await results.json();
       localStorage.setItem('storedData', JSON.stringify(storedList));
-      if (storedList.length > 0) {
-        generateListButton.classList.remove('hidden');
-      }
   
       loadAnimation.style.display = 'none';
-    //   console.table(storedList); 
-    });
-  
-    filterDataButton.addEventListener('click', (event) => {
-      console.log('clicked filterButton');
-  
-      const formData = new FormData(mainForm);
-      const formProps = Object.fromEntries(formData);
-  
-      console.log(formProps);
-      
-      const newList = filterList(currentList, formProps.resto);
-      injectHTML(newList);
-      
-      console.log(newList);
+    // console.table(storedList); 
     });
   
     generateListButton.addEventListener('click', (event) => {
       console.log('generate new list');
-      const recallList = localStorage.getItem('storedData');
-      const storedList = JSON.parse(recallList);
-      currentList = cutRestaurantList(storedList);
-      
+      currentList = cutRestaurantList(parsedData);
       console.log(currentList)
       injectHTML(currentList);
     });
